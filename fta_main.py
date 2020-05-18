@@ -86,8 +86,10 @@ for i in files:
                 # optional output: fta plot of amplitudes and interpolated group velocities
             outfile = sta1+"."+sta2+"."+chan #  optional plot file name
             fta_output = imp.compute_fta(xcor,time,fs,distance,alpha,periods)
-
-            # count number of measurements kept
+            # disregard erroneous output (forwhich fta_output == False)
+            if fta_output is False:
+                continue
+            # count number of measurements kept, skipping intances of 0 kept measurements
             n_kept = np.count_nonzero(~np.isnan(fta_output))
             if n_kept == 0:
                 continue
