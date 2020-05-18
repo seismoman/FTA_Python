@@ -207,8 +207,14 @@ def compute_fta(xcor, time, fs, distance, alpha, periods, vmin=1, vmax=5,
         env_3 = split_trace(x_env,time) # matrix of causal, acausal, symmetric parts
         per_3 = split_trace(x_phase,time) # matrix of phase info for 3 traces
 
+        # make sure stations aren't too far apart or too close
+        if stop > len(env_3[0]) or start < 1:
+            return False
+
         for j in range(3): #loop over causal, acausal, symmetric components
             # extract tempoeral window of interest for plotting
+                # this copies the entries in env_3[j] with indices in [window_index]
+                    # to the middle index in amplitude
             amplitude[j,:,k] = env_3[j][window_index]
             # extract tempoeral window of interest for disperion curve
             phase[j,:,k] = per_3[j][window_index]
